@@ -1,30 +1,32 @@
-# Employee & Order Management API
+# Employee Management API (with JWT Authentication)
 
-A complete REST API built with **FastAPI**, **SQLAlchemy (ORM)**, and **PostgreSQL**. This project demonstrates full CRUD operations along with **One-to-Many Relational Database** implementation.
+A backend REST API built with **FastAPI**, **SQLAlchemy**, and **PostgreSQL**. It covers full CRUD, a one-to-many relationship, and JWT-based authentication.
 
 ## 🚀 Features
-- **Employee Management (CRUD):**
-  - Create, Read, Update, and Delete employee records.
-  - Pagination and filtering by designation.
-- **User & Order Management (Relational):**
-  - Create users.
-  - Place orders linked to specific users (Foreign Key).
-  - Fetch all orders belonging to a specific user (One-to-Many Relationship).
-- **Data Validation:** Uses Pydantic to ensure valid data and prevent duplicate emails.
-- **Clean Architecture:** Uses FastAPI `Depends` for database session management.
+
+- **Employee Management (CRUD)** — create, read, update, delete, with pagination and filtering by designation.
+- **Users & Orders (One-to-Many)** — create users, place orders linked to a user, and fetch all orders of a user.
+- **Secure Authentication (JWT)** — registration with bcrypt hashing, login returns a JWT access token, protected routes require a valid token.
+- **Data Validation** — Pydantic prevents invalid data and duplicate emails/usernames.
+- **Clean Architecture** — FastAPI `Depends` for database sessions and route protection.
 
 ## 🛠️ Technologies Used
+
 - Python 3.10+
 - FastAPI
 - SQLAlchemy (ORM)
 - PostgreSQL
 - Pydantic
+- Passlib & Bcrypt (password hashing)
+- Python-JOSE (JWT)
 - Uvicorn
 
 ## 🗄️ Database Schema
-- **`employees`**: Stores employee details (id, name, email, designation, salary, is_active).
-- **`users_rel`**: Stores user details (id, name, email).
-- **`orders_rel`**: Stores order details (id, user_id [FK], product_name, amount).
+
+- **`employees`** — employee details and status.
+- **`users_rel`** — user/customer details.
+- **`orders_rel`** — orders linked to `users_rel` by foreign key.
+- **`users_auth`** — login credentials (hashed passwords) for JWT auth.
 
 ## ⚙️ How to Run Locally
 
@@ -32,34 +34,47 @@ A complete REST API built with **FastAPI**, **SQLAlchemy (ORM)**, and **PostgreS
    ```bash
    git clone git@github.com:TamannaEasmin/employee-management-api.git
    cd employee-management-api
+   ```
+
 2. **Create and activate a virtual environment:**
-python3 -m venv .venv
-source .venv/bin/activate
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
 
-3.**Install dependencies:**
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-pip install -r requirements.txt
+4. **Set up the database:**
+   - Make sure PostgreSQL is installed and running.
+   - Create the database:
+     ```bash
+     sudo -u postgres psql -c "CREATE DATABASE employee_db;"
+     ```
+   - Update `DATABASE_URL` in `models.py` with your credentials.
 
-4.**Set up the Database:**
+5. **Create the tables:**
+   ```bash
+   python -c "from models import Base, engine; Base.metadata.create_all(bind=engine)"
+   ```
 
-Ensure PostgreSQL is installed and running.
+6. **Run the server:**
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-Create a database named employee_db:
+7. **Open the API docs:** go to `http://127.0.0.1:8000/docs`.
 
-sudo -u postgres psql -c "CREATE DATABASE employee_db;"
-Update DATABASE_URL in models.py with your credentials.
+## 🔐 How to Test Authentication
 
-5.**Create Database Tables:**
+1. `POST /register` — create a user, e.g. `username: tamanna`, `password: 12345`.
+2. `POST /login` — use the same credentials and copy the `access_token` from the response.
+3. Click **Authorize** at the top right and enter your **username and password**. This API uses the OAuth2 password flow, so Swagger logs in for you — do not paste the token here.
+4. `GET /protected-data` — Execute and you should see a greeting. Click **Logout** and call it again to confirm `401 Unauthorized`.
 
-bash
-python -c "from models import Base, engine; Base.metadata.create_all(bind=engine)"
-Run the server:
+## 👩‍💻 Author
 
-bash
-uvicorn main:app --reload
-Test the API:
-Open the browser and go to http://127.0.0.1:8000/docs to view the Swagger UI.
-
-👩‍💻 Author
-Tamanna Easmin
-GitHub Profile
+**Tamanna Easmin**
+[GitHub Profile](https://github.com/TamannaEasmin)
