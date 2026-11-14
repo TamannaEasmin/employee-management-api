@@ -1,7 +1,19 @@
+import os
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Boolean, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
-DATABASE_URL = "postgresql://postgres:12345@localhost:5432/employee_db"
+
+
+
+# Priority: Environment variable from Render
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    # Fallback for local development
+    DATABASE_URL = "postgresql://postgres:12345@localhost:5432/employee_db"
+
+print(f"Connecting to database: {DATABASE_URL[:30]}...")  # To verify it's not localhost
+
 
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
