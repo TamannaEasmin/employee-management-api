@@ -17,4 +17,4 @@ def test_create_employee():
             "salary": 50000
         }
     )
-    assert response.status_code in [200, 400] # It might say email already registered
+    assert response.status_code in [200, 400]  # 400 if email already exists
