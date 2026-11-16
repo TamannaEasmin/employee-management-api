@@ -6,16 +6,17 @@ from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 
 # Priority: Environment variable from Render
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get("DATABASE_URL","sqlite:///./test.db" )
 
-if not DATABASE_URL:
+  
     # Fallback for local development
-    DATABASE_URL = "postgresql://postgres:12345@localhost:5432/employee_db"
+  
+
 
 print(f"Connecting to database: {DATABASE_URL[:30]}...")  # To verify it's not localhost
 
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {})
 Base = declarative_base()
 
 
@@ -63,6 +64,6 @@ class Order(Base):
 # Best practice sessionmaker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create all tables
-Base.metadata.create_all(bind=engine)
+# Create all tab 
+
 print("Tables created successfully!")
