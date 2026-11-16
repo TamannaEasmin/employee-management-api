@@ -1,5 +1,4 @@
-name: Python Test
-s
+name: Python Tests
 
 on:
   push:
