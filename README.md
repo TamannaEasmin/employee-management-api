@@ -1,6 +1,8 @@
-# Employee Management API (with JWT Authentication)
+# Employee Management API 
 
-A backend REST API built with **FastAPI**, **SQLAlchemy**, and **PostgreSQL**. It covers full CRUD, a one-to-many relationship, and JWT-based authentication.
+A complete backend REST API built with **FastAPI**, **SQLAlchemy (ORM)**, and **PostgreSQL**. This project features a secure JWT-based authentication system, relational database design, Docker containerization, and CI/CD via GitHub Actions.
+
+![Python Tests](https://github.com/TamannaEasmin/employee-management-api/actions/workflows/test.yml/badge.svg)
 
 ## 🚀 Features
 
@@ -9,6 +11,10 @@ A backend REST API built with **FastAPI**, **SQLAlchemy**, and **PostgreSQL**. I
 - **Secure Authentication (JWT)** — registration with bcrypt hashing, login returns a JWT access token, protected routes require a valid token.
 - **Data Validation** — Pydantic prevents invalid data and duplicate emails/usernames.
 - **Clean Architecture** — FastAPI `Depends` for database sessions and route protection.
+- **Automated Testing:** Full test coverage using `pytest` and `httpx`.
+- **CI/CD:** GitHub Actions workflow runs tests automatically on every push.
+
+
 
 ## 🛠️ Technologies Used
 
